@@ -39,38 +39,19 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(devices) { device in
-                                Text(device.name)
+                                NavigationLink(value: device) {
+                                    Text(device.name)
+                                }
+                                
                             }
                         }
                     }
                 }
-                // MARK: - 1
-//                if devices != [] {
-//                    List {
-//                        ForEach(devices) { device in
-//                            Text(device.name)
-//                        }
-//                    }
-//                } else {
-//                    ProgressView()
-//                }
-                // MARK: - 2
-//                if devices != [] {
-//                    List {
-//                        ForEach(devices) { device in
-//                            Text(device.name)
-//                        }
-//                    }
-//                } else {
-//                    List {
-//                        ForEach(0..<10,id: \.self) { _ in
-//                            Text("hello world!")
-//                                .redacted(reason: .placeholder )
-//                        }
-//                    }
-//                }
             }
             .navigationTitle("Devices")
+            .navigationDestination(for: DeviceModel.self, destination: { device in
+                DetailView(device: device)
+            })
             .task {
                devices = await fetchData()
             }
@@ -78,7 +59,7 @@ struct ContentView: View {
         
     }
     func fetchData() async -> [DeviceModel] {
-        let endpoint = "https://api.restful-api.de/objects"
+        let endpoint = "https://api.restful-api.dev/objects"
         guard let url = URL(string: endpoint) else {
             state = .end
             return []
@@ -90,18 +71,11 @@ struct ContentView: View {
                 print("server error")
                 return []
             }
-//            print("data bytes : \(data.count)")
-//            guard let jsonData = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) as? [[String:Any]] else {
-//                print("parsing error")
-//                return
-//            }
-//            print("json: \(jsonData)")
             guard let decodedJSON = try? JSONDecoder().decode([DeviceModel].self, from: data) else {
                 print("parsing error")
                 state = .end
                 return []
             }
-            print(decodedJSON)
             state = .end
             return decodedJSON
         } catch {
@@ -114,7 +88,7 @@ struct ContentView: View {
     }
 }
 
-struct DeviceModel : Identifiable, Codable, Equatable {
+struct DeviceModel : Identifiable,Hashable, Codable, Equatable {
     let id : String
     let name : String
 }
