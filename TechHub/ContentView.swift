@@ -12,6 +12,7 @@ enum DataLoadingState {
 
 struct ContentView: View {
     @StateObject var viewModel = DeviceViewModel()
+    @State var searchText : String = ""
     // MARK: - body
     var body: some View {
         NavigationStack {
@@ -32,14 +33,20 @@ struct ContentView: View {
                         }
                     } else {
                         List {
-                            ForEach(viewModel.devices) { device in
+                            ForEach(viewModel.filteredDevices) { device in
                                 NavigationLink(value: device) {
-                                    Text(device.name)
+                                    Label(device.name, systemImage: device.icon)
                                 }
                                 
                             }
                         }
                         .listStyle(.inset)
+                        .animation(.easeInOut, value: viewModel.filteredDevices)
+                        .searchable(text: $searchText, prompt: "search here")
+                        .onChange(of: searchText) { _, _ in
+                            
+                            viewModel.filter(searchText)
+                        }
                     }
                 }
             }

@@ -14,6 +14,8 @@ struct DetailView: View {
     // MARK: - body
     var body: some View {
         VStack {
+            Image(systemName: device.icon)
+                .font(.title)
             Text(device.name)
                 .font(.title2)
             switch viewModel.state {

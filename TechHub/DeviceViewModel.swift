@@ -12,6 +12,7 @@ final class DeviceViewModel: ObservableObject {
     
     @Published var state : DataLoadingState = .start
     @Published var devices : [DeviceModel] = []
+    @Published var filteredDevices : [DeviceModel] = []
     
     // MARK: - Listing
     func fetchData() async throws {
@@ -33,6 +34,7 @@ final class DeviceViewModel: ObservableObject {
             }
             state = .end
             self.devices = decodedJSON
+            self.filteredDevices = decodedJSON
         } catch {
             state = .end
             throw NetworkError.networkError
@@ -73,6 +75,16 @@ final class DeviceViewModel: ObservableObject {
             
         } catch {
             throw NetworkError.networkError
+        }
+    }
+    // MARK: - Filter
+    func filter(_ searchText:String) {
+        if searchText.isEmpty {
+            filteredDevices = devices
+        } else {
+            
+            filteredDevices = devices.filter{ $0.name.lowercased().contains(searchText.lowercased())}
+            
         }
     }
     
