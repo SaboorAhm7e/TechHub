@@ -11,8 +11,7 @@ import SwiftUI
 struct TechHubApp: App {
     var body: some Scene {
         WindowGroup {
-            //ContentView()
-            AddDeviceView()
+            ContentView()
         }
     }
 }

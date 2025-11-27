@@ -8,63 +8,85 @@
 import SwiftUI
 
 struct AddDeviceView: View {
+    enum FocusedField {
+        case deviceName
+        case specname
+        case specvalue
+    }
+    @FocusState private var focusField : FocusedField?
     @State var deviceName : String = ""
     @State var specName : String = ""
     @State var specValue : String = ""
     @State var deviceSpecs : [SpecModel] = []
+    @Environment(\.dismiss) var dismiss
+    @State var showProgress : Bool = false
     var body: some View {
-        NavigationStack {
-            VStack(alignment:.leading,spacing:15) {
-                TextField("Enter Device Name", text: $deviceName)
-                    .textFieldStyle(.roundedBorder)
-                List {
-                    ForEach(deviceSpecs) { spec in
-                        LabeledContent(spec.name, value: spec.value)
-                    }
-                }
-                .listStyle(.inset)
                 
-                
-                Text("Add Specs")
-              
-                HStack {
-                    TextField("Name", text: $specName)
+                Form {
+                    TextField("Enter Device Name", text: $deviceName)
                         .textFieldStyle(.roundedBorder)
-                    TextField("Value",text: $specValue)
-                        .textFieldStyle(.roundedBorder)
-                    Button {
-                        guard  specName.isEmpty == false,specValue.isEmpty == false else {
-                            return
+                        .focused($focusField, equals: .deviceName)
+                    if !deviceSpecs.isEmpty {
+                        Section("Specs"){
+                            ForEach(deviceSpecs) { spec in
+                                LabeledContent(spec.name, value: spec.value)
+                            }
                         }
-                        let spec = SpecModel(name: specName, value: specValue)
-                        deviceSpecs.append(spec)
-                        specName = ""
-                        specValue = ""
-                    } label: {
-                        Image(systemName: "plus")
                     }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.roundedRectangle)
-
-                }
-                
-                Button("Add Device") {
-                    Task {
-                        await addDevice()
-                    }
+                        
                    
+                        Section("Add Specs"){
+                            HStack {
+                                TextField("Name", text: $specName)
+                                    .textFieldStyle(.roundedBorder)
+                                    .focused($focusField, equals: .specname)
+                                    
+                                TextField("Value",text: $specValue)
+                                    .textFieldStyle(.roundedBorder)
+                                    .focused($focusField, equals: .specvalue)
+                                Button {
+                                    guard  specName.isEmpty == false,specValue.isEmpty == false else {
+                                        return
+                                    }
+                                    let spec = SpecModel(name: specName, value: specValue)
+                                    deviceSpecs.append(spec)
+                                    specName = ""
+                                    specValue = ""
+                                    focusField = nil
+                                } label: {
+                                    Image(systemName: "plus")
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .buttonBorderShape(.roundedRectangle)
+
+                            }
+                            Button("Add Device") {
+                                Task {
+                                    await addDevice()
+                                }
+                               
+                            }
+                            .buttonStyle(.bordered)
+                            .buttonSizing(.flexible)
+                            .disabled(deviceName.isEmpty ? true : false)
+                        }
+                       
                 }
-                .buttonStyle(.bordered)
-                .buttonSizing(.flexible)
-                .disabled(deviceName.isEmpty ? true : false)
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            .navigationTitle("Device")
-        }
+                .formStyle(.grouped)
+                .overlay {
+                    if showProgress {
+                        ProgressView()
+                    }
+                    
+                }
+                .onDisappear {
+                    showProgress = false
+                }
+               // .padding(.horizontal)
+                .navigationTitle("Device")
     }
     func addDevice() async {
+        showProgress = true
         let endpoint = "https://api.restful-api.dev/objects"
         guard let url = URL(string: endpoint) else {
             print("invalid url")
@@ -88,12 +110,7 @@ struct AddDeviceView: View {
                 print("server error")
                 return
             }
-            guard let decoded = try? JSONDecoder().decode(DeviceModel.self, from: data) else {
-                print("decoding error")
-                return
-            }
-            print("decode: ",decoded)
-            
+           dismiss()
             
         } catch {
             print("network error")

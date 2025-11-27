@@ -9,13 +9,19 @@ import SwiftUI
 enum DataLoadingState {
     case start,end
 }
+enum NavigationRute : Hashable {
+    case showDetail(DeviceModel)
+    case addDevice(UUID)
+}
 
 struct ContentView: View {
     @StateObject var viewModel = DeviceViewModel()
     @State var searchText : String = ""
+    @State var path = NavigationPath()
     // MARK: - body
     var body: some View {
-        NavigationStack {
+    
+        NavigationStack(path: $path) {
             VStack {
                 switch viewModel.state {
                 case .start:
@@ -34,7 +40,7 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(viewModel.filteredDevices) { device in
-                                NavigationLink(value: device) {
+                                NavigationLink(value: NavigationRute.showDetail(device)) {
                                     Label(device.name, systemImage: device.icon)
                                 }
                                 
@@ -51,14 +57,30 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Devices")
-            .navigationDestination(for: DeviceModel.self, destination: { device in
-                DetailView(device: device)
-                    .environmentObject(viewModel)
+            .toolbar(content: {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("", systemImage: "plus") {
+                               path.append(NavigationRute.addDevice(UUID()))
+                    }
+                }
+            })
+            .navigationDestination(for: NavigationRute.self, destination: { route in
+                let _ = print(route)
+                switch route {
+                case .showDetail(let device):
+                    
+                    DetailView(device: device)
+                        .environmentObject(viewModel)
+                case .addDevice:
+                    AddDeviceView()
+                }
             })
             .task {
-               await fetch()
+                    await fetch()
             }
+           
         }
+       
         
     }
     // MARK: - method
