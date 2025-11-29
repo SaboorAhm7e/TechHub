@@ -88,4 +88,31 @@ final class DeviceViewModel: ObservableObject {
         }
     }
     
+    func addDevice(model:AddDeviceModel) async throws -> Bool {
+        let endpoint = "https://api.restful-api.dev/objects"
+        guard let url = URL(string: endpoint) else {
+            throw NetworkError.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        guard let encoded = try? JSONEncoder().encode(model) else {
+            throw NetworkError.decodingError
+        }
+        request.httpBody = encoded
+        
+        do {
+            let (_,response) = try await URLSession.shared.data(for: request)
+            
+            guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                throw NetworkError.serverError
+            }
+            return true
+            
+        } catch {
+            throw NetworkError.networkError
+        }
+    }
+    
 }

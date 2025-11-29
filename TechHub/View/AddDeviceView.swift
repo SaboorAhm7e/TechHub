@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddDeviceView: View {
+    // MARK: - properties
     enum FocusedField {
         case deviceName
         case specname
@@ -20,6 +21,8 @@ struct AddDeviceView: View {
     @State var deviceSpecs : [SpecModel] = []
     @Environment(\.dismiss) var dismiss
     @State var showProgress : Bool = false
+    @EnvironmentObject var viewModel: DeviceViewModel
+    // MARK: - body
     var body: some View {
                 
                 Form {
@@ -45,14 +48,7 @@ struct AddDeviceView: View {
                                     .textFieldStyle(.roundedBorder)
                                     .focused($focusField, equals: .specvalue)
                                 Button {
-                                    guard  specName.isEmpty == false,specValue.isEmpty == false else {
-                                        return
-                                    }
-                                    let spec = SpecModel(name: specName, value: specValue)
-                                    deviceSpecs.append(spec)
-                                    specName = ""
-                                    specValue = ""
-                                    focusField = nil
+                                    addSpecs()
                                 } label: {
                                     Image(systemName: "plus")
                                 }
@@ -61,10 +57,7 @@ struct AddDeviceView: View {
 
                             }
                             Button("Add Device") {
-                                Task {
-                                    await addDevice()
-                                }
-                               
+                               addDevice()
                             }
                             .buttonStyle(.bordered)
                             .buttonSizing(.flexible)
@@ -85,46 +78,42 @@ struct AddDeviceView: View {
                // .padding(.horizontal)
                 .navigationTitle("Device")
     }
-    func addDevice() async {
-        showProgress = true
-        let endpoint = "https://api.restful-api.dev/objects"
-        guard let url = URL(string: endpoint) else {
-            print("invalid url")
+    // MARK: - method
+    func addSpecs() {
+        guard  specName.isEmpty == false,specValue.isEmpty == false else {
             return
         }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let spec = SpecModel(name: specName, value: specValue)
+        deviceSpecs.append(spec)
+        specName = ""
+        specValue = ""
+        focusField = nil
+    }
+    func addDevice() {
         var deviceData = AddDeviceModel(name: deviceName, data: [:])
         for v in deviceSpecs {
             deviceData.data[v.name] = v.value
         }
-        guard let jsonData = try? JSONEncoder().encode(deviceData) else {
-            print("failed to parse data")
-            return
-        }
-        request.httpBody = jsonData
-        do {
-            let (data,response) = try await URLSession.shared.data(for: request)
-            guard let response = response as? HTTPURLResponse,(200...299).contains(response.statusCode) else {
+        Task {
+            do {
+               let status = try await viewModel.addDevice(model: deviceData)
+                if status {
+                    dismiss()
+                }
+            } catch NetworkError.invalidURL{
+                print("invalid url")
+            } catch NetworkError.decodingError {
+                print("decoding error")
+            } catch NetworkError.networkError {
+                print("network error")
+            } catch NetworkError.serverError {
                 print("server error")
-                return
+            } catch {
+                print("unknown error")
             }
-           dismiss()
             
-        } catch {
-            print("network error")
         }
     }
-}
-struct SpecModel: Identifiable {
-    var id = UUID()
-    let name : String
-    let value : String
-}
-struct AddDeviceModel : Codable {
-    var name : String
-    var data : [String:String]
 }
 
 #Preview {

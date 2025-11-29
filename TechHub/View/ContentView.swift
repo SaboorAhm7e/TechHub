@@ -6,13 +6,6 @@
 //
 
 import SwiftUI
-enum DataLoadingState {
-    case start,end
-}
-enum NavigationRute : Hashable {
-    case showDetail(DeviceModel)
-    case addDevice(UUID)
-}
 
 struct ContentView: View {
     @StateObject var viewModel = DeviceViewModel()
@@ -73,6 +66,7 @@ struct ContentView: View {
                         .environmentObject(viewModel)
                 case .addDevice:
                     AddDeviceView()
+                        .environmentObject(viewModel)
                 }
             })
             .task {
