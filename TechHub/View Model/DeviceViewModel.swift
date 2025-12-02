@@ -37,7 +37,7 @@ final class DeviceViewModel: ObservableObject {
             self.filteredDevices = decodedJSON
         } catch {
             state = .end
-            throw NetworkError.networkError
+            throw NetworkError.networkError(error: error.localizedDescription)
         }
      
     }
@@ -74,7 +74,7 @@ final class DeviceViewModel: ObservableObject {
             return dict
             
         } catch {
-            throw NetworkError.networkError
+            throw NetworkError.networkError(error: error.localizedDescription)
         }
     }
     // MARK: - Filter
@@ -111,7 +111,27 @@ final class DeviceViewModel: ObservableObject {
             return true
             
         } catch {
-            throw NetworkError.networkError
+            throw NetworkError.networkError(error: error.localizedDescription)
+        }
+    }
+    // MARK: - Delete
+    
+    func delete(id:String) async throws {
+        let endpoint = "https://api.restful-api.dev/objects/\(id)"
+        guard let url = URL(string: endpoint) else {
+            throw NetworkError.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        do {
+            let(_,response) = try await URLSession.shared.data(for: request)
+            
+            guard let response = response as? HTTPURLResponse,(200...299).contains(response.statusCode) else {
+                throw NetworkError.serverError
+            }
+        } catch  {
+            throw NetworkError.networkError(error: error.localizedDescription)
         }
     }
     

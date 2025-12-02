@@ -35,6 +35,15 @@ struct ContentView: View {
                             ForEach(viewModel.filteredDevices) { device in
                                 NavigationLink(value: NavigationRute.showDetail(device)) {
                                     Label(device.name, systemImage: device.icon)
+                                        .swipeActions {
+                                            Button("", systemImage: "trash") {
+                                                Task {
+                                                    
+                                                    await delete(id: device.id)
+                                                }
+                                            }
+                                            .tint(.red)
+                                        }
                                 }
                                 
                             }
@@ -79,20 +88,26 @@ struct ContentView: View {
     }
     // MARK: - method
     func fetch() async {
+        
         do {
             try await viewModel.fetchData()
-        } catch NetworkError.networkError {
-            print("network error")
-        } catch NetworkError.invalidURL {
-            print("invalid url")
-        } catch NetworkError.serverError {
-            print("server error")
-        } catch NetworkError.decodingError {
-            print("decoding error")
+        } catch let error as NetworkError {
+            print(error)
         } catch {
-            print("unknown error")
+            print("Unknown error")
         }
     }
+    func delete(id:String) async {
+        do {
+            try await viewModel.delete(id: id)
+        } catch let error as NetworkError {
+            print(error)
+        } catch {
+            print("unknown erro")
+        }
+    }
+    
+
 }
 
 
