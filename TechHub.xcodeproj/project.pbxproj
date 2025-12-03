@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		D3D32AAF2EE01C1900FB7413 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3E39F0F2ED063D40068B9BC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3E39F162ED063D40068B9BC;
+			remoteInfo = TechHub;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		D3D32AAB2EE01C1900FB7413 /* TechHubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TechHubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3E39F172ED063D50068B9BC /* TechHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		D3D32AAC2EE01C1900FB7413 /* TechHubTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TechHubTests;
+			sourceTree = "<group>";
+		};
 		D3E39F192ED063D50068B9BC /* TechHub */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TechHub;
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D3D32AA82EE01C1900FB7413 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3E39F142ED063D40068B9BC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				D3E39F192ED063D50068B9BC /* TechHub */,
+				D3D32AAC2EE01C1900FB7413 /* TechHubTests */,
 				D3E39F182ED063D50068B9BC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				D3E39F172ED063D50068B9BC /* TechHub.app */,
+				D3D32AAB2EE01C1900FB7413 /* TechHubTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D3D32AAA2EE01C1900FB7413 /* TechHubTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3D32AB12EE01C1900FB7413 /* Build configuration list for PBXNativeTarget "TechHubTests" */;
+			buildPhases = (
+				D3D32AA72EE01C1900FB7413 /* Sources */,
+				D3D32AA82EE01C1900FB7413 /* Frameworks */,
+				D3D32AA92EE01C1900FB7413 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3D32AB02EE01C1900FB7413 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D3D32AAC2EE01C1900FB7413 /* TechHubTests */,
+			);
+			name = TechHubTests;
+			packageProductDependencies = (
+			);
+			productName = TechHubTests;
+			productReference = D3D32AAB2EE01C1900FB7413 /* TechHubTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		D3E39F162ED063D40068B9BC /* TechHub */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3E39F222ED063D60068B9BC /* Build configuration list for PBXNativeTarget "TechHub" */;
@@ -80,6 +128,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					D3D32AAA2EE01C1900FB7413 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = D3E39F162ED063D40068B9BC;
+					};
 					D3E39F162ED063D40068B9BC = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -100,11 +152,19 @@
 			projectRoot = "";
 			targets = (
 				D3E39F162ED063D40068B9BC /* TechHub */,
+				D3D32AAA2EE01C1900FB7413 /* TechHubTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D3D32AA92EE01C1900FB7413 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3E39F152ED063D40068B9BC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +175,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D3D32AA72EE01C1900FB7413 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3E39F132ED063D40068B9BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +191,57 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		D3D32AB02EE01C1900FB7413 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3E39F162ED063D40068B9BC /* TechHub */;
+			targetProxy = D3D32AAF2EE01C1900FB7413 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		D3D32AB22EE01C1900FB7413 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4HMHL946U5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saboor.TechHubTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TechHub.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TechHub";
+			};
+			name = Debug;
+		};
+		D3D32AB32EE01C1900FB7413 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4HMHL946U5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saboor.TechHubTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TechHub.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TechHub";
+			};
+			name = Release;
+		};
 		D3E39F202ED063D60068B9BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -313,6 +430,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D3D32AB12EE01C1900FB7413 /* Build configuration list for PBXNativeTarget "TechHubTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3D32AB22EE01C1900FB7413 /* Debug */,
+				D3D32AB32EE01C1900FB7413 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D3E39F122ED063D40068B9BC /* Build configuration list for PBXProject "TechHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
