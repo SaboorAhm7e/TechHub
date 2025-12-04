@@ -10,4 +10,5 @@ import SwiftUI
 enum NavigationRute : Hashable {
     case showDetail(DeviceModel)
     case addDevice(UUID)
+    case updateDevice(DeviceModel)
 }

@@ -11,6 +11,7 @@ struct DetailView: View {
     @EnvironmentObject var viewModel : DeviceViewModel
     var device : DeviceModel
     @State var dataDict : [String:String] = [:]
+    @Binding var navigationPath : NavigationPath
     // MARK: - body
     var body: some View {
         VStack {
@@ -38,30 +39,32 @@ struct DetailView: View {
            
             Spacer()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("", systemImage: "pencil.line") {
+                    navigationPath.append(NavigationRute.updateDevice(device))
+                }
+            }
+        }
         .task {
           await fetch()
         }
     }
     // MARK: - Method
     func fetch() async {
+        
         do {
             viewModel.state = .start
             dataDict = try await viewModel.fetchDetail(id: device.id)
-        } catch NetworkError.networkError {
-            print("network error")
-        } catch NetworkError.invalidURL {
-            print("invalid url")
-        } catch NetworkError.serverError {
-            print("server error")
-        } catch NetworkError.decodingError {
-            print("decoding error")
+        } catch let error as NetworkError {
+            print(error)
         } catch {
             print("unknown error")
         }
     }
     
 }
-
-#Preview {
-    DetailView(device: .init(id: "1", name: "hello"))
-}
+//
+//#Preview {
+//    DetailView(device: .init(id: "1", name: "hello"))
+//}

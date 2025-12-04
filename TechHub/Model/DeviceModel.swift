@@ -9,8 +9,8 @@ import SwiftUI
 
 struct DeviceModel : Identifiable,Hashable, Codable, Equatable {
     
-    let id : String
-    let name : String
+    var id : String
+    var name : String
     var icon : String {
         if name.lowercased().contains("iphone") {
             return "iphone"

@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+   
     @StateObject var viewModel = DeviceViewModel()
     @State var searchText : String = ""
     @State var path = NavigationPath()
     // MARK: - body
     var body: some View {
-    
+        
         NavigationStack(path: $path) {
             VStack {
                 switch viewModel.state {
@@ -62,7 +63,7 @@ struct ContentView: View {
             .toolbar(content: {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("", systemImage: "plus") {
-                               path.append(NavigationRute.addDevice(UUID()))
+                        path.append(NavigationRute.addDevice(UUID()))
                     }
                 }
             })
@@ -70,20 +71,22 @@ struct ContentView: View {
                 let _ = print(route)
                 switch route {
                 case .showDetail(let device):
-                    
-                    DetailView(device: device)
+                    DetailView(device: device,navigationPath: $path)
                         .environmentObject(viewModel)
                 case .addDevice:
                     AddDeviceView()
                         .environmentObject(viewModel)
+                case .updateDevice(let device):
+                    UpdateDevice(device:device)
+                        .environmentObject(viewModel)
                 }
             })
             .task {
-                    await fetch()
+                await fetch()
             }
-           
+            
         }
-       
+        
         
     }
     // MARK: - method

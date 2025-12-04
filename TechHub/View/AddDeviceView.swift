@@ -116,6 +116,6 @@ struct AddDeviceView: View {
     }
 }
 
-#Preview {
-    AddDeviceView()
-}
+//#Preview {
+//    AddDeviceView(, navigationPath: .constant(.))
+//}

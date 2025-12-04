@@ -9,6 +9,6 @@ import SwiftUI
 
 struct SpecModel: Identifiable {
     var id = UUID()
-    let name : String
-    let value : String
+    var name : String
+    var value : String
 }

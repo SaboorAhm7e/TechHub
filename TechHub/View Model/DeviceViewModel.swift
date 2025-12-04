@@ -87,6 +87,7 @@ final class DeviceViewModel: ObservableObject {
             
         }
     }
+    // MARK: - Add Device
     
     func addDevice(model:AddDeviceModel) async throws -> Bool {
         let endpoint = "https://api.restful-api.dev/objects"
